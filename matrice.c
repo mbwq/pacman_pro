@@ -32,10 +32,10 @@ void matrice_print(matrice * M){
   int i, j;
   for(i=0; i < M->lig ;i++){
     for(j=0; j < M->col; j++){
-      printf("%d %d %c - ", i,j,M->elt[i][j]);
+      printf("%c"/*, i, j*/,M->elt[i][j]);
     }
+    printf("\n");
   }
-  printf("\n");
 }
 
 void matrice_set(matrice* M, int i, int j, char x){
@@ -44,11 +44,15 @@ void matrice_set(matrice* M, int i, int j, char x){
 
 matrice* matrice_file(FILE * fp){
   int i, j, n, m;
+  int c = fgetc(fp);
   fscanf(fp, "%d", &n);
   fscanf(fp, "%d", &m);
-  matrice * M = matrice_create(n,m);
+  matrice * M = matrice_create(n, m);
   for(i=0; i < M->lig ;i++){
     for(j=0; j < M->col; j++){
+      while(c == '\n'){ // condition pour ignore retour à la ligne
+        c = fgetc(fp);
+      }
       fscanf(fp, "%c", (M->elt[i])+j);
        //printf("char : %d %d %s fin\n", i,j, (M->elt[i])+j);
     }
